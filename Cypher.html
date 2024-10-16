@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Cipher & Decipher Tool with Number Encoding</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            word-wrap: break-word; /* Ensure long strings wrap */
+            overflow: auto; /* Allow scrolling if content exceeds height */
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap; /* Preserve line breaks and wrapping */
+            word-wrap: break-word; /* Ensure content stays in the box */
+            overflow: auto; /* Allow scrolling if content exceeds height */
+            max-height: 200px; /* Set a max height if needed */
+        }
+    </style>
+</head>
+<body>
+    <h1>Secure Cipher & Decipher Tool with Number Encoding</h1>
+    <h2>Encrypt Message</h2>
+    <textarea id="plainText" placeholder="Enter your plain message here..."></textarea><br>
+    <button onclick="cipher()">Encrypt</button>
+    <div class="result" id="cipherResult"></div>
+
+    <h2>Decrypt Message</h2>
+    <textarea id="cipherText" placeholder="Enter your encrypted message here..."></textarea><br>
+    <button onclick="decipher()">Decrypt</button>
+    <div class="result" id="decipherResult"></div>
+
+    <script>
+        let substitution = {};
+        let reverseSubstitution = {};
+        const key = "secureKey123"; // Key used for Caesar shift
+
+        // Function to generate random substitution
+        function generateRandomSubstitution() {
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            const shuffled = alphabet.split('').sort(() => 0.5 - Math.random()).join('');
+
+            for (let i = 0; i < alphabet.length; i++) {
+                substitution[alphabet[i]] = shuffled[i];
+                reverseSubstitution[shuffled[i]] = alphabet[i];
+            }
+        }
+
+        // Generate the random substitution table at runtime
+        generateRandomSubstitution();
+
+        // Function to derive a shift value from a key
+        function getCaesarShiftFromKey(key) {
+            let shiftValue = 0;
+            for (let i = 0; i < key.length; i++) {
+                shiftValue += key.charCodeAt(i);
+            }
+            return shiftValue % 26; // Keep shift value between 0 and 25
+        }
+
+        const shiftValue = getCaesarShiftFromKey(key);
+
+        function cipher() {
+            const input = document.getElementById('plainText').value;
+            const encrypted = encode(input);
+            const numberEncoded = convertToNumbers(encrypted);  // New step: converting to number encoding
+            document.getElementById('cipherResult').innerText = numberEncoded; // Directly set without adding line breaks
+        }
+
+        function encode(input) {
+            let encodedMessage = '';
+            for (let char of input) {
+                if (char >= 'A' && char <= 'Z') {
+                    encodedMessage += '*' + (substitution[char] || char);
+                } else {
+                    encodedMessage += substitution[char] || char;
+                }
+            }
+
+            let shiftedMessage = '';
+            for (let char of encodedMessage) {
+                let code = char.charCodeAt(0);
+
+                // Shift lowercase letters only (uppercase marked with *)
+                if (char >= 'a' && char <= 'z') {
+                    code += shiftValue;
+                    if (code > 'z'.charCodeAt(0)) code -= 26;
+                }
+
+                shiftedMessage += (char >= '0' && char <= '9') ? char : String.fromCharCode(code);
+            }
+
+            return shiftedMessage;
+        }
+
+        // Function to convert the string to number encoding
+        function convertToNumbers(input) {
+            let numberEncodedMessage = '';
+            for (let char of input) {
+                // Convert each character to its ASCII value and append it to the result
+                numberEncodedMessage += char.charCodeAt(0).toString().padStart(3, '0');  // ASCII with zero-padding
+            }
+            return numberEncodedMessage;
+        }
+
+        // Function to add line breaks to the string
+        function addLineBreaks(input, chunkSize) {
+            let result = '';
+            for (let i = 0; i < input.length; i += chunkSize) {
+                result += input.substring(i, i + chunkSize) + '\n';
+            }
+            return result;
+        }
+
+        function decipher() {
+            const input = document.getElementById('cipherText').value;
+            const decodedString = convertFromNumbers(input.replace(/\s+/g, ''));  // Remove line breaks
+            const deciphered = decode(decodedString);
+            document.getElementById('decipherResult').innerText = deciphered;
+        }
+
+        // Function to convert the number encoded message back to string
+        function convertFromNumbers(input) {
+            let decodedMessage = '';
+            for (let i = 0; i < input.length; i += 3) {
+                // Convert every three digits back to the corresponding ASCII character
+                const charCode = parseInt(input.substring(i, i + 3));
+                decodedMessage += String.fromCharCode(charCode);
+            }
+            return decodedMessage;
+        }
+
+        function decode(input) {
+            let decodedMessage = '';
+
+            // Reverse Caesar shift for lowercase letters
+            for (let char of input) {
+                let code = char.charCodeAt(0);
+
+                if (char >= 'a' && char <= 'z') {
+                    code -= shiftValue;
+                    if (code < 'a'.charCodeAt(0)) code += 26;
+                }
+
+                decodedMessage += (char >= '0' && char <= '9') ? char : String.fromCharCode(code);
+            }
+
+            // Apply reverse substitution
+            let finalDecodedMessage = '';
+            let isCapital = false;
+            for (let char of decodedMessage) {
+                // Check for the marker (*), which indicates a capitalized letter
+                if (char === '*') {
+                    isCapital = true;
+                    continue;
+                }
+
+                let decodedChar = reverseSubstitution[char] || char;
+                if (isCapital) {
+                    decodedChar = decodedChar.toUpperCase();
+                    isCapital = false;
+                }
+
+                finalDecodedMessage += decodedChar;
+            }
+
+            return finalDecodedMessage;
+        }
+    </script>
+</body>
+</html>
