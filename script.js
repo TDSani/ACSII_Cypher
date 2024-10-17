@@ -84,7 +84,7 @@ function decipher() {
     document.getElementById('decipherResult').innerText = deciphered;
     setTimeout(() => {
         document.getElementById('decipherResult').innerText = '';
-    }, 5000);
+    }, 10000);
 }
 
 // Function to convert numbers back to characters
