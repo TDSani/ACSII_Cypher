@@ -13,11 +13,11 @@
             border-radius: 10px;
         }
 
-        textarea {
+        textarea, input {
             width: 100%;
-            height: 100px;
-            word-wrap: break-word; /* Ensure long strings wrap */
-            overflow: auto; /* Allow scrolling if content exceeds height */
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         button {
@@ -40,15 +40,19 @@
             background-color: #fff;
             border: 1px solid #ccc;
             border-radius: 5px;
-            white-space: pre-wrap; /* Preserve line breaks and wrapping */
-            word-wrap: break-word; /* Ensure content stays in the box */
-            overflow: auto; /* Allow scrolling if content exceeds height */
-            max-height: 200px; /* Set a max height if needed */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow: auto;
+            max-height: 200px;
         }
     </style>
 </head>
 <body>
     <h1>Secure Cipher & Decipher Tool with Number Encoding</h1>
+
+    <h2>Seed Value (Ensure the same seed is used for both encryption and decryption)</h2>
+    <input type="number" id="seedValue" placeholder="Enter a seed value (e.g., 12345)">
+
     <h2>Encrypt Message</h2>
     <textarea id="plainText" placeholder="Enter your plain message here..."></textarea><br>
     <button onclick="cipher()">Encrypt</button>
@@ -64,21 +68,7 @@
         let reverseSubstitution = {};
         const key = "secureKey123"; // Key used for Caesar shift
 
-        // Function to generate random substitution
-        function generateRandomSubstitution() {
-            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            const shuffled = alphabet.split('').sort(() => 0.5 - Math.random()).join('');
-
-            for (let i = 0; i < alphabet.length; i++) {
-                substitution[alphabet[i]] = shuffled[i];
-                reverseSubstitution[shuffled[i]] = alphabet[i];
-            }
-        }
-
-        // Generate the random substitution table at runtime
-        generateRandomSubstitution();
-
-        // Function to derive a shift value from a key
+        // Function to derive a Caesar shift value from a key
         function getCaesarShiftFromKey(key) {
             let shiftValue = 0;
             for (let i = 0; i < key.length; i++) {
@@ -89,11 +79,30 @@
 
         const shiftValue = getCaesarShiftFromKey(key);
 
+        // Function for seeded random number generator
+        function seededRandom(seed) {
+            var x = Math.sin(seed++) * 10000;
+            return x - Math.floor(x);
+        }
+
+        // Function to generate a seeded substitution cipher
+        function generateSeededSubstitution(seed) {
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            const shuffled = alphabet.split('').sort(() => seededRandom(seed) - 0.5).join('');
+
+            for (let i = 0; i < alphabet.length; i++) {
+                substitution[alphabet[i]] = shuffled[i];
+                reverseSubstitution[shuffled[i]] = alphabet[i];
+            }
+        }
+
         function cipher() {
             const input = document.getElementById('plainText').value;
+            const seed = parseInt(document.getElementById('seedValue').value); // Get seed from input
+            generateSeededSubstitution(seed);  // Generate substitution cipher with the seed
             const encrypted = encode(input);
-            const numberEncoded = convertToNumbers(encrypted);  // New step: converting to number encoding
-            document.getElementById('cipherResult').innerText = numberEncoded; // Directly set without adding line breaks
+            const numberEncoded = convertToNumbers(encrypted);  // Converting to number encoding
+            document.getElementById('cipherResult').innerText = numberEncoded;
         }
 
         function encode(input) {
@@ -126,23 +135,15 @@
         function convertToNumbers(input) {
             let numberEncodedMessage = '';
             for (let char of input) {
-                // Convert each character to its ASCII value and append it to the result
                 numberEncodedMessage += char.charCodeAt(0).toString().padStart(3, '0');  // ASCII with zero-padding
             }
             return numberEncodedMessage;
         }
 
-        // Function to add line breaks to the string
-        function addLineBreaks(input, chunkSize) {
-            let result = '';
-            for (let i = 0; i < input.length; i += chunkSize) {
-                result += input.substring(i, i + chunkSize) + '\n';
-            }
-            return result;
-        }
-
         function decipher() {
             const input = document.getElementById('cipherText').value;
+            const seed = parseInt(document.getElementById('seedValue').value); // Get seed from input
+            generateSeededSubstitution(seed);  // Generate substitution cipher with the seed
             const decodedString = convertFromNumbers(input.replace(/\s+/g, ''));  // Remove line breaks
             const deciphered = decode(decodedString);
             document.getElementById('decipherResult').innerText = deciphered;
@@ -152,7 +153,6 @@
         function convertFromNumbers(input) {
             let decodedMessage = '';
             for (let i = 0; i < input.length; i += 3) {
-                // Convert every three digits back to the corresponding ASCII character
                 const charCode = parseInt(input.substring(i, i + 3));
                 decodedMessage += String.fromCharCode(charCode);
             }
@@ -178,7 +178,6 @@
             let finalDecodedMessage = '';
             let isCapital = false;
             for (let char of decodedMessage) {
-                // Check for the marker (*), which indicates a capitalized letter
                 if (char === '*') {
                     isCapital = true;
                     continue;
