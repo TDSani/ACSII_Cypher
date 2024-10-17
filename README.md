@@ -10,8 +10,7 @@ TDSaniCypher is a web-based encryption and decryption tool that allows users to 
 - **Responsive Design**: Works seamlessly on various devices and screen sizes.
 
 ## Demo
-
-![TDSaniCypher Demo](https://acsii-cypher.onrender.com/)
+<a href="https://acsii-cypher.onrender.com">TDSaniCypher Demo</a>
 
 ## Technologies Used
 
