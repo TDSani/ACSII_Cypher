@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #141415; /* Dark background */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    min-height: 100vh; /* Full viewport height */
+    color: #e8e6e3; /* Light text color */
+}
+
+h1 {
+    color: #28a745; /* Green color for title */
+    margin-bottom: 20px; /* Space below title */
+}
+
+.seed-container {
+    width: 90%; /* Set the width to match the boxes */
+    max-width: 1000px; /* Maximum width */
+    border: 2px solid #28a745; /* Green border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 5px; /* Reduced padding */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    background-color: #1c1c1c; /* Dark background for seed input */
+    margin-bottom: 20px; /* Space below the seed input */
+}
+
+.container {
+    display: flex; /* Use flexbox to align two boxes */
+    justify-content: space-between; /* Space between boxes */
+    width: 90%; /* Responsive width */
+    max-width: 1000px; /* Maximum width */
+    gap: 20px; /* Space between the boxes */
+    flex-wrap: wrap; /* Allow boxes to wrap on smaller screens */
+}
+
+.box {
+    background-color: #1c1c1c; /* Dark box background */
+    border-radius: 10px;
+    padding: 15px; /* Adjusted padding for consistency */
+    box-shadow: rgba(66, 66, 66, 0.1) 0px 0px 10px;
+    flex: 1; /* Allow boxes to grow and fill space */
+    min-width: 300px; /* Minimum width for boxes */
+    border: 2px solid #28a745; /* Green border */
+}
+
+h2 {
+    text-align: center; /* Center text */
+    color: #28a745; /* Green color for headers */
+}
+
+textarea, input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid rgb(62, 68, 70); /* Darker border */
+    border-radius: 5px;
+    box-sizing: border-box; /* Include padding and border in width */
+    background-color: #2b2a33; /* Input field background */
+    color: #e8e6e3; /* Input text color */
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #28a745; /* Green background for buttons */
+    font-size: 15px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%; /* Full width buttons */
+    box-sizing: border-box; /* Include padding and border in width */
+}
+
+button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.result {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #2b2a33; /* Darker result background */
+    border: 1px solid #766e61; /* Border color */
+    border-radius: 5px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: auto;
+    max-height: 200px;
+    color: #e8e6e3; /* Light text color for results */
+}
+
+.input-container {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+}
+
+.eye-button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    margin-right: 10px;
+    margin-top: 0px;
+    width: 50px;
+    color: #e8e6e3; /* Light color for eye button */
+}
+
+/* Additional responsiveness */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack boxes vertically on small screens */
+    }
+}
