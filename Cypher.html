@@ -147,7 +147,13 @@
             const decodedString = convertFromNumbers(input.replace(/\s+/g, ''));  // Remove line breaks
             const deciphered = decode(decodedString);
             document.getElementById('decipherResult').innerText = deciphered;
+
+            // Auto clear the deciphered message after 5 seconds (5000 milliseconds)
+            setTimeout(() => {
+                document.getElementById('decipherResult').innerText = '';
+            }, 5000);
         }
+
 
         // Function to convert the number encoded message back to string
         function convertFromNumbers(input) {
