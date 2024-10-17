@@ -2,117 +2,144 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #141415; /* Dark background */
+    background: linear-gradient(135deg, #0d0d0e, #1a1a1a); /* Added gradient background */
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    min-height: 100vh; /* Full viewport height */
-    color: #e8e6e3; /* Light text color */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #e8e6e3; /* Light text color for readability */
+}
+
+h1, h2, h3 {
+    color: #28a745; /* Green color for headers */
+    text-align: center;
 }
 
 h1 {
-    color: #28a745; /* Green color for title */
-    margin-bottom: 20px; /* Space below title */
+    margin-bottom: 30px; /* Increased spacing for main title */
 }
 
-.seed-container {
-    width: 90%; /* Set the width to match the boxes */
-    max-width: 1000px; /* Maximum width */
-    border: 2px solid #28a745; /* Green border */
-    border-radius: 10px; /* Rounded corners */
-    padding: 5px; /* Reduced padding */
-    display: flex; /* Use flexbox for alignment */
-    align-items: center; /* Center items vertically */
-    background-color: #1c1c1c; /* Dark background for seed input */
-    margin-bottom: 20px; /* Space below the seed input */
+h2, h3 {
+    margin-bottom: 20px; /* Consistent spacing for subheadings */
 }
 
 .container {
-    display: flex; /* Use flexbox to align two boxes */
-    justify-content: space-between; /* Space between boxes */
-    width: 90%; /* Responsive width */
-    max-width: 1000px; /* Maximum width */
-    gap: 20px; /* Space between the boxes */
-    flex-wrap: wrap; /* Allow boxes to wrap on smaller screens */
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 800px; /* Reduced max width for a more compact look */
+    gap: 20px;
 }
 
-.box {
-    background-color: #1c1c1c; /* Dark box background */
+.card {
+    background-color: #1c1c1c; /* Dark card background */
+    border: 2px solid #28a745; /* Green border for cards */
     border-radius: 10px;
-    padding: 15px; /* Adjusted padding for consistency */
-    box-shadow: rgba(66, 66, 66, 0.1) 0px 0px 10px;
-    flex: 1; /* Allow boxes to grow and fill space */
-    min-width: 300px; /* Minimum width for boxes */
-    border: 2px solid #28a745; /* Green border */
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 10px; /* Subtle shadow effect */
+    padding: 20px; /* Added padding for inner spacing */
 }
 
-h2 {
-    text-align: center; /* Center text */
-    color: #28a745; /* Green color for headers */
+.input-group {
+    position: relative;
 }
 
-textarea, input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border: 1px solid rgb(62, 68, 70); /* Darker border */
+.password-toggle-icon {
+    position: absolute;
+    top: 60%; /* Set to 60% from the top */
+    right: 10px; /* Position from the right */
+    cursor: pointer;
+    transform: translateY(-50%); /* Center the icon vertically based on its height */
+    z-index: 10; /* Ensure it is above the input field */
+}
+
+input.form-control, textarea.form-control {
+    width: 100%; /* Full width */
+    padding: 12px; /* Increased padding for better touch targets */
+    margin: 10px 0;
+    border: 2px solid #28a745; /* Green border for inputs */
     border-radius: 5px;
-    box-sizing: border-box; /* Include padding and border in width */
-    background-color: #2b2a33; /* Input field background */
-    color: #e8e6e3; /* Input text color */
+    box-sizing: border-box;
+    background-color: #1a1a1a; /* Dark background for inputs */
+    color: #f0f0f0; /* Light text color */
+    font-size: 16px; /* Increased font size for better readability */
+    transition: border-color 0.3s; /* Smooth border transition */
+}
+
+/* Set a consistent min-height for the encrypt and decrypt input fields */
+#plainText, #cipherText {
+    min-height: 150px; /* Minimum height for both inputs */
+    resize: none; /* Prevent resizing */
+}
+
+/* Maintain dark background and light grey text on focus */
+input.form-control:focus, textarea.form-control:focus {
+    border-color: #4caf50; /* Change border color on focus */
+    background-color: #1a1a1a; /* Keep the same dark background color on focus */
+    color: #d3d3d3; /* Light grey text color on focus */
+    outline: none; /* Remove default outline */
 }
 
 button {
     margin-top: 10px;
-    padding: 10px;
-    background-color: #28a745; /* Green background for buttons */
-    font-size: 15px;
-    color: #fff;
-    border: none;
+    padding: 12px; /* Increased padding */
+    font-size: 16px; /* Increased font size */
     border-radius: 5px;
     cursor: pointer;
-    width: 100%; /* Full width buttons */
-    box-sizing: border-box; /* Include padding and border in width */
+    width: 100%;
+    transition: background-color 0.3s; /* Smooth background transition */
 }
 
-button:hover {
-    background-color: #218838; /* Darker green on hover */
+button.btn-success {
+    background-color: #28a745; /* Green background */
+    color: #fff;
+}
+
+button.btn-success:hover {
+    background-color: #4caf50; /* Darker green on hover */
+}
+
+button.btn-secondary {
+    background-color: #6c757d; /* Gray background */
+    color: #fff;
+}
+
+button.btn-secondary:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+}
+
+button.btn-danger {
+    background-color: #dc3545; /* Red background */
+    color: #fff;
+}
+
+button.btn-danger:hover {
+    background-color: #c82333; /* Darker red on hover */
 }
 
 .result {
     margin-top: 20px;
-    padding: 10px;
-    background-color: #2b2a33; /* Darker result background */
-    border: 1px solid #766e61; /* Border color */
+    padding: 15px; /* Increased padding for results */
+    background-color: #2b2a33; /* Dark background for results */
+    border: 1px solid #766e61; /* Light border */
     border-radius: 5px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow: auto;
     max-height: 200px;
-    color: #e8e6e3; /* Light text color for results */
+    overflow: auto;
+    color: #e8e6e3; /* Light text color */
 }
 
-.input-container {
-    display: flex; /* Use flexbox for alignment */
-    align-items: center; /* Center items vertically */
+/* Additional styling for improved spacing and layout */
+.instructions {
+    margin: 20px 0; /* Space around instructions */
+    padding: 15px;
+    background-color: rgba(40, 167, 69, 0.2); /* Light green background */
+    border: 1px solid #28a745; /* Green border for instructions */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Centered text */
 }
 
-.eye-button {
-    cursor: pointer;
-    background: none;
-    border: none;
-    outline: none;
-    margin-right: 10px;
-    margin-top: 0px;
-    width: 50px;
-    color: #e8e6e3; /* Light color for eye button */
-}
-
-/* Additional responsiveness */
 @media (max-width: 768px) {
     .container {
-        flex-direction: column; /* Stack boxes vertically on small screens */
+        flex-direction: column;
     }
 }

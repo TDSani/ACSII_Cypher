@@ -4,35 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TDSaniCypher</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <h1>TDSaniCypher</h1> <!-- Title added -->
-    <div class="seed-container"> <!-- Seed input container -->
-        <button class="eye-button" onclick="toggleSeedVisibility()">
-            👁️
-        </button>
-        <input type="password" id="seedValue" placeholder="Enter a seed value (e.g., 12345)">
-    </div>
-    <div class="container">
-        <div class="box">
-            <h2>Cipher</h2>
-            <h2>Encrypt Message</h2>
-            <textarea id="plainText" placeholder="Enter your plain message here..."></textarea>
-            <button onclick="cipher()">Encrypt</button>
-            <button onclick="copyToClipboard()">Copy Encrypted Numbers</button>
-            <div class="result" id="cipherResult"></div>
-        </div>
+<body class="text-light">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">TDSaniCypher</h1>
+        
+        <div class="row mb-4">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group input-group mb-3">
+                            <input type="password" class="form-control" id="seedValue" placeholder="Enter a seed value (e.g., 12345)" autocomplete="off">
+                            <div class="input-group-append">
+                                <span class="password-toggle-icon">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                        </div>                      
+                    </div>
+                </div>
+            </div>
+        </div>     
 
-        <div class="box">
-            <h2>Decipher</h2>
-            <h2>Decrypt Message</h2>
-            <textarea id="cipherText" placeholder="Enter your encrypted message here..."></textarea>
-            <button onclick="decipher()">Decrypt</button>
-            <div class="result" id="decipherResult"></div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h3>Encrypt Message</h3>
+                        <textarea class="form-control" id="plainText" placeholder="Enter your plain message here..."></textarea>
+                        <button class="btn btn-success mt-2" onclick="cipher()">Encrypt</button>
+                        <button class="btn btn-secondary mt-2" onclick="copyToClipboard()">Copy Encrypted Numbers</button>
+                        <div class="result mt-3" id="cipherResult"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Decrypt Message</h3>
+                        <textarea class="form-control" id="cipherText" placeholder="Enter your encrypted message here..."></textarea>
+                        <button class="btn btn-danger mt-2" onclick="decipher()">Decrypt</button>
+                        <div class="result mt-3" id="decipherResult"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="script.js"></script> <!-- Link to the JavaScript file -->
+    <script src="script.js"></script>
 </body>
 </html>
