@@ -7,10 +7,37 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            background-color: #141415; /* Dark background */
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            min-height: 100vh; /* Full viewport height */
+            color: #e8e6e3; /* Light text color */
+        }
+
+        .container {
+            display: flex; /* Use flexbox to align two boxes */
+            justify-content: space-between; /* Space between boxes */
+            width: 90%; /* Responsive width */
+            max-width: 1000px; /* Maximum width */
+            gap: 20px; /* Space between the boxes */
+        }
+
+        .box {
+            background-color: #1c1c1c; /* Dark box background */
             border-radius: 10px;
+            padding: 30px;
+            box-shadow: rgba(66, 66, 66, 0.1) 0px 0px 10px;
+            flex: 1; /* Allow boxes to grow and fill space */
+            min-width: 300px; /* Minimum width for boxes */
+            border: 2px solid #28a745; /* Green border */
+        }
+
+        h1, h2 {
+            text-align: center; /* Center text */
+            color: #28a745; /* Green color for headers */
         }
 
         textarea, input {
@@ -18,32 +45,41 @@
             padding: 10px;
             margin-top: 10px;
             margin-bottom: 10px;
+            border: 1px solid rgb(62, 68, 70); /* Darker border */
+            border-radius: 5px;
+            box-sizing: border-box; /* Include padding and border in width */
+            background-color: #2b2a33; /* Input field background */
+            color: #e8e6e3; /* Input text color */
         }
 
         button {
             margin-top: 10px;
             padding: 10px;
-            background-color: #28a745;
-            color: white;
+            background-color: #28a745; /* Green background for buttons */
+            font-size: 15px;
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%; /* Full width buttons */
+            box-sizing: border-box; /* Include padding and border in width */
         }
 
         button:hover {
-            background-color: #218838;
+            background-color: #218838; /* Darker green on hover */
         }
 
         .result {
             margin-top: 20px;
             padding: 10px;
-            background-color: #fff;
-            border: 1px solid #ccc;
+            background-color: #2b2a33; /* Darker result background */
+            border: 1px solid #766e61; /* Border color */
             border-radius: 5px;
             white-space: pre-wrap;
             word-wrap: break-word;
             overflow: auto;
             max-height: 200px;
+            color: #e8e6e3; /* Light text color for results */
         }
 
         .input-container {
@@ -56,37 +92,50 @@
             background: none;
             border: none;
             outline: none;
-            margin: 0px;
+            margin-right: 10px;
+            margin-top: 0px;
+            width: 50px;
+            color: #e8e6e3; /* Light color for eye button */
         }
 
-        .input-container {
-            max-width: 300px;
+        h1, h2 {
+            text-align: left;
         }
     </style>
 </head>
 <body>
-    <h1>Secure Cipher & Decipher Tool with Number Encoding</h1>
+    <div class="container">
+        <div class="box">
+            <h1>Cipher</h1>
+            <h2>Encrypt Message</h2>
+            <div class="input-container">
+                <button class="eye-button" onclick="toggleSeedVisibility()">
+                    👁️
+                </button>
+                <input type="password" id="seedValue" placeholder="Enter a seed value (e.g., 12345)">
+            </div>
 
-    <h2>Seed Value (Ensure the same seed is used for both encryption and decryption)</h2>
-    <div class="input-container">
-        <input type="password" id="seedValue" placeholder="Enter a seed value (e.g., 12345)">
-        <button class="eye-button" onclick="toggleSeedVisibility()">
-            👁️
-        </button>
+            <h2>Encrypt Message</h2>
+            <textarea id="plainText" placeholder="Enter your plain message here..."></textarea>
+            <button onclick="cipher()">Encrypt</button>
+            <button onclick="copyToClipboard()">Copy Encrypted Numbers</button>
+            <div class="result" id="cipherResult"></div>
+        </div>
+
+        <div class="box">
+            <h1>Decipher</h1>
+            <h2>Decrypt Message</h2>
+            <div class="input-container">
+                <button class="eye-button" onclick="toggleSeedVisibility()">
+                    👁️
+                </button>
+                <input type="password" id="seedValueDecrypt" placeholder="Enter a seed value (e.g., 12345)">
+            </div>
+            <textarea id="cipherText" placeholder="Enter your encrypted message here..."></textarea>
+            <button onclick="decipher()">Decrypt</button>
+            <div class="result" id="decipherResult"></div>
+        </div>
     </div>
-
-    <h2>Encrypt Message</h2>
-    <textarea id="plainText" placeholder="Enter your plain message here..."></textarea><br>
-    <button onclick="cipher()">Encrypt</button>
-    
-    <!-- New Copy Button -->
-    <button onclick="copyToClipboard()">Copy Encrypted Numbers</button>
-    <div class="result" id="cipherResult"></div>
-
-    <h2>Decrypt Message</h2>
-    <textarea id="cipherText" placeholder="Enter your encrypted message here..."></textarea><br>
-    <button onclick="decipher()">Decrypt</button>
-    <div class="result" id="decipherResult"></div>
 
     <script>
         let substitution = {};
@@ -167,7 +216,7 @@
 
         function decipher() {
             const input = document.getElementById('cipherText').value;
-            const seed = parseInt(document.getElementById('seedValue').value); // Get seed from input
+            const seed = parseInt(document.getElementById('seedValueDecrypt').value); // Get seed from input
             generateSeededSubstitution(seed);  // Generate substitution cipher with the seed
             const decodedString = convertFromNumbers(input.replace(/\s+/g, ''));  // Remove line breaks
             const deciphered = decode(decodedString);
@@ -230,6 +279,10 @@
             const cipherText = document.getElementById('cipherResult').innerText;
             navigator.clipboard.writeText(cipherText).then(() => {
                 alert('Encrypted numbers copied to clipboard!');
+
+                // Clear the encrypted message and the input field after copying
+                document.getElementById('cipherResult').innerText = ''; // Clear the displayed numbers
+                document.getElementById('plainText').value = ''; // Clear the input field
             }).catch(err => {
                 console.error('Failed to copy: ', err);
             });
