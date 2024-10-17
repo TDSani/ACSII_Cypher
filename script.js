@@ -13,16 +13,17 @@ function getCaesarShiftFromKey(key) {
 
 const shiftValue = getCaesarShiftFromKey(key);
 
-// Function to generate seeded random number
-function seededRandom(seed) {
-    var x = Math.sin(seed++) * 10000;
-    return x - Math.floor(x);
-}
-
-// Function to create a seeded substitution cipher
+// Function to create a deterministic seeded substitution cipher
 function generateSeededSubstitution(seed) {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    const shuffled = alphabet.split('').sort(() => seededRandom(seed) - 0.5).join('');
+    let shuffled = alphabet.split('');
+    const seedNumber = parseInt(seed);
+
+    // Use a consistent approach to shuffle based on the seed
+    for (let i = 0; i < shuffled.length; i++) {
+        const swapIndex = (i + seedNumber + i * i) % shuffled.length; // Deterministic swap based on seed
+        [shuffled[i], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[i]];
+    }
 
     for (let i = 0; i < alphabet.length; i++) {
         substitution[alphabet[i]] = shuffled[i];
@@ -33,8 +34,8 @@ function generateSeededSubstitution(seed) {
 // Function to encrypt the message
 function cipher() {
     const input = document.getElementById('plainText').value;
-    const seed = parseInt(document.getElementById('seedValue').value);
-    generateSeededSubstitution(seed);
+    const seed = document.getElementById('seedValue').value;
+    generateSeededSubstitution(seed); // Use the user-provided seed
     const encrypted = encode(input);
     const numberEncoded = convertToNumbers(encrypted);
     document.getElementById('cipherResult').innerText = numberEncoded;
@@ -76,8 +77,8 @@ function convertToNumbers(input) {
 // Function to decrypt the message
 function decipher() {
     const input = document.getElementById('cipherText').value;
-    const seed = parseInt(document.getElementById('seedValue').value);
-    generateSeededSubstitution(seed);
+    const seed = document.getElementById('seedValue').value;
+    generateSeededSubstitution(seed); // Use the user-provided seed
     const decodedString = convertFromNumbers(input.replace(/\s+/g, ''));
     const deciphered = decode(decodedString);
     document.getElementById('decipherResult').innerText = deciphered;
@@ -128,7 +129,6 @@ function decode(input) {
 function copyToClipboard() {
     const cipherText = document.getElementById('cipherResult').innerText;
     navigator.clipboard.writeText(cipherText).then(() => {
-        // Change the text of the result area to indicate success
         const resultArea = document.getElementById('cipherResult');
         resultArea.innerText = 'Numbers copied ✔️'; // Change the text to indicate success
         
@@ -143,7 +143,6 @@ function copyToClipboard() {
         console.error('Failed to copy: ', err);
     });
 }
-
 
 // Function to handle mouse down and mouse up on the eye icon
 function toggleSeedVisibilityOnMouseHold() {
