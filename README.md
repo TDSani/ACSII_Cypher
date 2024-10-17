@@ -1,81 +1,52 @@
-# Manually Decipher Text Encoded with ASCII Values
+# TDSaniCypher
 
-## Understanding the Encoding Scheme
-Each letter is represented by its ASCII value in a three-digit format. For example:
-- **A** = **065**
-- **B** = **066**
-- **Space** = **032**
+TDSaniCypher is a web-based encryption and decryption tool that allows users to securely encode messages using a seed value. The application implements a custom substitution cipher and Caesar cipher for encryption. With a user-friendly interface, it provides an intuitive way for users to protect their messages.
 
-## Encoding the Example Message
-Let's take the example message: **"This is an example"**. 
-First, convert each character to its ASCII value:
-- **T** = **084**
-- **h** = **104**
-- **i** = **105**
-- **s** = **115**
-- (space) = **032**
-- **i** = **105**
-- **s** = **115**
-- (space) = **032**
-- **a** = **097**
-- **n** = **110**
-- (space) = **032**
-- **e** = **101**
-- **x** = **120**
-- **a** = **097**
-- **m** = **109**
-- **p** = **112**
-- **l** = **108**
-- **e** = **101**
+## Features
 
-The encoded message will be:
-- **084104105115032105115032097110032101120097109112108101**
+- **Encrypt Messages**: Input a plain message and a seed value to generate encrypted numbers.
+- **Decrypt Messages**: Convert encrypted numbers back into the original message using the same seed value.
+- **Clipboard Functionality**: Easily copy encrypted numbers with a single click.
+- **Responsive Design**: Works seamlessly on various devices and screen sizes.
 
-## Splitting the Encoded Message
-Take the entire encoded string and break it into groups of three digits. For example, from your encoded text:
-- **042073032042106032042109032042074032...**
+## Demo
 
-This results in:
-- **042 073 032 042 106 032 042 109 032 042 074 032...**
+![TDSaniCypher Demo](link-to-your-demo-image.png)
 
-## Converting Each Group to a Character
-For each three-digit number, convert it to its corresponding ASCII character. Use the ASCII table or a conversion tool:
-- **042** -> **\***
-- **073** -> **I**
-- **032** -> (space)
-- **106** -> **j**
-- **109** -> **m**
-- **074** -> **J**
-- **...** and so on for the rest of the groups.
+## Technologies Used
 
-## Reassembling the Decoded Message
-As you convert each three-digit group, write down the corresponding characters to form a sentence. Continuing from the example:
-- **042 -> \***
-- **073 -> I**
-- **032 -> (space)**
-- **106 -> j**
-- **032 -> (space)**
-- **109 -> m**
-- **...**
+- HTML
+- CSS
+- JavaScript
+- Bootstrap (for styling)
+- Font Awesome (for icons)
 
-This results in an intermediate string like:
-- **"* I j * m ..."**
+## Installation
 
-## Cleaning Up the Decoded Message
-Remove any unwanted characters (like the **\*** if it is used as a placeholder) and adjust spacing as necessary. The final step involves reading through the assembled characters and interpreting them contextually. Ensure that any extra spaces or symbols that do not contribute to the message are deleted.
+To run the project locally, follow these steps:
 
-## Example: Full Decoding Process
-Given the encoded text:
-- **042073032042106032...**
+1.  Clone the repository:
+    ```bash git clone https://github.com/TDSani/ACSII_Cypher.git```
+2. Navigate into the project directory:
+    ```cd ACSII_Cypher```
+3. Open index.html in your web browser.
 
-After splitting:
-- **042 073 032 106 ...**
+## Usage
 
-Convert each group to characters:
-- **I (space) j ...**
+1.  Enter Seed Value: Input a seed value (e.g., 12345) to initialize the cipher.
+2.  Encrypt a Message:
+    -   Type your plain message in the "Encrypt Message" box.
+    -   Click the "Encrypt" button to generate encrypted numbers.
+    -   Click "Copy Encrypted Numbers" to copy the result.
+3.  Decrypt a Message:
+    -   Paste the encrypted numbers into the "Decrypt Message" box.
+    -   Click the "Decrypt" button to retrieve the original message.
 
-Final result after cleaning:
-- **"I j ..."**
+## Contributing
 
-## Conclusion
-By following these steps, you can manually decipher the encoded message into readable text. The key is to understand the format (three-digit ASCII values) and methodically convert each segment back to its corresponding character.
+Contributions are welcome! If you have suggestions for improvements or new features, feel free to create a pull request or open an issue.
+
+## Acknowledgments
+
+-   Thanks to <a href="https://getbootstrap.com/">Bootstrap</a> for the UI framework.
+-   Thanks to <a href="https://fontawesome.com/">Font Awesome</a> for the icons.
